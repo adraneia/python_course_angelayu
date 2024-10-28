@@ -9,7 +9,8 @@ screen.setup(width=600, height=600)
 screen.tracer(0)
 
 turtle = Player()
-#car = CarManager()
+car_manager = CarManager()
+scoreboard = Scoreboard()
 
 screen.listen()
 screen.onkey(turtle.up, "Up")
@@ -23,12 +24,25 @@ while game_is_on:
     times_slept += 1
     time.sleep(0.1)
     if times_slept % 6 == 0:
-        car = CarManager()
         times_slept = 0
-    if car.xcor() > -300:
-        car.go_left()
+        screen.update()
+        car_manager.create_car()
+    car_manager.go_left()
+
+    for car in car_manager.list_of_cars:
+        # DETECT collision with car
+        if car.distance(turtle) < 20:
+            game_is_on = False
+            print("loser")
+            scoreboard.game_over()
+
+    # DETECT collision with top edge of the screen
+    if turtle.ycor() > 280:
+        turtle.refresh()
+        car_manager.move_increment()
+        print("yippee")
+        scoreboard.increase_level()
 
     screen.update()
-
 
 screen.exitonclick()
