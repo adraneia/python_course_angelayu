@@ -46,7 +46,7 @@ import pandas
 # print(data["condition"])
 # print(data.condition)
 
-#data in a roq
+#data in a row
 # print(data[data.day == "Monday"])
 # print(data[data.temp == data["temp"].max()])
 #
