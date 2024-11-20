@@ -14,6 +14,7 @@ class States(Turtle):
         new_state.penup()
         new_state.color("black")
         new_state.goto(position)
-        new_state.write(state_name, font=('Arial', 12, 'normal'))
+        #new_state.write(state_name, font=('Arial', 12, 'normal'))
+        new_state.write(state_name)
         #self.list_of_found_states.append(new_state)
         self.list_of_found_states.append(state_name)
