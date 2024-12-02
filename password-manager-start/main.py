@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import choice,randint,shuffle
 import pyperclip
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 def generate_password():
@@ -31,18 +32,46 @@ def generate_password():
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 def add():
-    if len(username_input.get()) == 0 or len(website_input.get()) == 0 or len(password_input.get()) == 0:
+
+    website = website_input.get()
+    email = username_input.get()
+    password = password_input.get()
+
+    new_data = {
+        website: {
+            "email": email,
+            "password": password,
+        }
+    }
+    if len(email) == 0 or len(website) == 0 or len(password) == 0:
         messagebox.showerror(title="Oooops", message=f"Make sure you havent left any fields empty !!!")
     else:
-        is_ok = messagebox.askokcancel(title=website_input.get(), message = f"These are the details entered: "
-                                                                            f"\nEmail: {username_input.get()} "
-                                                                            f"\nPassword: {password_input.get()} "
-                                                                            f"\nIs it ok to save?")
-        if is_ok:
-            with open("password_manager.txt", mode="a") as file:
-                file.write(f"{website_input.get()}  |  {username_input.get()}  | {password_input.get()}\n")
-                website_input.delete(0,END)
-                password_input.delete(0,END)
+        # is_ok = messagebox.askokcancel(title=website_input.get(), message = f"These are the details entered: "
+        #                                                                     f"\nEmail: {username_input.get()} "
+        #                                                                     f"\nPassword: {password_input.get()} "
+        #                                                                     f"\nIs it ok to save?")
+        # if is_ok:
+        #with open("password_manager.txt", mode="a") as file:
+        # with open("password_manager_data.json", mode="w") as file:
+        #     file.write(f"{website_input.get()}  |  {username_input.get()}  | {password_input.get()}\n")
+        #     json.dump(new_data, file, indent=4)
+        try:
+            with open("password_manager_data.json", mode="r") as file:
+                #reading old data
+                data = json.load(file)
+        except FileNotFoundError:
+            with open("password_manager_data.json", "w") as file:
+                json.dump(new_data, file, indent = 4)
+        else:
+            #updating old data with new data
+            data.update(new_data)
+            #print(type(data))
+            with open("password_manager_data.json", "w") as file:
+                #saving updated data
+                json.dump(data,file,indent =4)
+        finally:
+            website_input.delete(0,END)
+            password_input.delete(0,END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 
