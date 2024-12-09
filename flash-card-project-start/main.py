@@ -14,7 +14,6 @@ except FileNotFoundError:
 else:
     to_learn = french_data_df.to_dict(orient="records")
 
-
 # french_data_df = pandas.read_csv("data/french_words.csv")
 # print(french_data_df)
 #
@@ -52,7 +51,6 @@ def is_known():
     data = pandas.DataFrame(to_learn)
     data.to_csv("data/words_to_learn.csv", index = False)
     next_card()
-
 
 window = Tk()
 window.title("Flashy")
